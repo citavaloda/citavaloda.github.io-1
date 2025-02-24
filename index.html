@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informācijas panelis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        footer {
+            margin-top: 50px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 880px;
+            width: 100%;
+        }
+        
+        .logo-container {
+            width: 100%;
+            max-width: 880px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 100px;
+        }
+        
+
+        .panelis-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 320px;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .panelis-container h1 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .panelis-container button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #0056b3;
+            color: #ffffff;
+            border: none;
+            margin-top: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .panelis-container button:hover {
+            background-color: #004494;
+        }
+
+        .satura-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .satura-content {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 200%;
+        }
+
+        .satura-page {
+            width: 50%;
+            padding: 20px;
+        }
+
+        .satura-page h1 {
+            font-size: 1.6rem;
+            color: #333333;
+            margin-bottom: 16px;
+        }
+
+        .satura-page a {
+            display: block;
+            font-size: 1rem;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .satura-page a:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .donation-container {
+            max-width: 880px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .donation-container h2 {
+            font-size: 1.6rem;
+            color: #333333;
+            margin-bottom: 16px;
+        }
+
+        .donation-container p {
+            font-size: 1rem;
+            color: #555555;
+            margin-bottom: 20px;
+        }
+
+        .paypal-button input[type="image"] {
+            cursor: pointer;
+            border: none;
+            transition: transform 0.3s;
+        }
+
+        .paypal-button input[type="image"]:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-buttons {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        let currentPage = 0;
+
+        function navigateContent(direction) {
+            const content = document.querySelector('.satura-content');
+            const pages = document.querySelectorAll('.satura-page');
+            currentPage = (currentPage + direction + pages.length) % pages.length;
+            content.style.transform = `translateX(-${currentPage * 50}%)`;
+        }
+    </script>
+</head>
+<body>
+    <div class="logo-container">
+    <img src="logo.png" alt="Cita Valoda">
+</div>
+<div class="container">
+    <div class="panelis-container">
+        
+    </div>
+
+    <div class="satura-container">
+        <div class="satura-content">
+            <div class="satura-page">
+                <h1>Brīvais saturs "Cita valoda"</h1>
+                <hr>
+                <a href="pirmaispants.html">1. Es un mēs lietu pasaulē.</a>
+                <a href="otraispants.html">2. Rudens veltes.</a>
+                <a href="tresaispants.html">3. Mana Latvija.</a>
+                <a href="ceturtaispants.html">4. Es un citi ziemā.</a>
+                <a href="piektaispants.html">5. Esi drošs cilvēku pasaulē.</a>
+                <a href="sestaispants.html">6. Rūpēs par dzīvniekiem.</a>
+                <a href="septitaispants.html">7. Es dabas pasaulē.</a>
+                <a href="astotaispants.html">8. Gribu visu zināt.</a>
+                <a href="devitaispants.html">9. Par ko kļūt.</a>
+            </div>
+            <div class="satura-page">
+                <h1>Cits saturs</h1>
+                <hr>
+                <p>Šeit varētu būt cits saturs.</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="navigateContent(-1)">← Iepriekšējais</button>
+            <button onclick="navigateContent(1)">Nākamais →</button>
+        </div>
+    </div>
+</div>
+
+<div class="donation-container">
+    <div class="donation-section">
+        <h2>Atbalstiet "Cita valoda" vietnes uzturēšanu</h2>
+        <p>Jūsu ziedojumi palīdz mums uzturēt un uzlabot vietnes saturu, kā arī atbalsta izpildītājus un radošos projektus.</p>
+        <form action="https://www.paypal.com/donate" method="post" target="_top" class="paypal-button">
+            <input type="hidden" name="hosted_button_id" value="JAAWMHKELBXJQ" />
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - Drošākais un vienkāršākais veids, kā ziedot tiešsaistē!" alt="Ziedot ar PayPal pogu" />
+            <img alt="" border="0" src="https://www.paypal.com/en_LV/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+    </div>
+</div>
+<footer>
+    &copy; <?php echo date("Y"); ?> Cita Valoda. Visas tiesības aizsargātas.
+</footer>
+</body>
+</html>

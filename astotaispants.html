@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Literature</title>
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .module-container {
+            max-width: 880px;
+            width: 100%;
+            background: white;
+            display: inline-block;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .controls button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .controls button:hover {
+            background: #ddd;
+        }
+        .controls button:active {
+            background: #ccc;
+        }
+        .progress-container {
+            margin: 20px 0;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 10px;
+        }
+        #progress-bar {
+            width: 0;
+            height: 100%;
+            background: #007BFF;
+            transition: width 0.3s;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .back-button:hover {
+            background: #0056b3;
+        }
+        
+        
+        
+    </style>
+    
+</head>
+<body>
+<div class="module-container">
+    <div class="image-container">
+        <img id="word-image" src="images/saule.png" alt="Word Image">
+    </div>
+    <div class="text-container">
+        <p id="word-text">Saule,</p>
+    </div>
+    <audio id="word-audio" src="audio/oranges.mp3" autoplay></audio>
+    <div class="controls">
+        <button id="start-button">&#9658;</button>
+        <button id="stop-button">&#10074;&#10074;</button>
+        <button id="replay-button">&#x21bb;</button>
+        <button id="slide-left-button">&#9665;</button>
+        <button id="slide-right-button">&#9655;</button>
+        <button id="mute-button">🔈</button>
+    </div>
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <!-- Back to Dashboard Button -->
+    <button class="back-button" onclick="window.location.href='index.html'">Atpakaļ uz paneli</button>
+</div>
+
+<script>
+const sentences = [
+    {
+        sentence: "Saule spīd tā- tā tā. Putni dzied lā, lā, lā!",
+        words: [
+            { word: "Saule,", image: "images/saule.png", audio: "audio/saule.wav" },
+            { word: "Spīd tā- tā tā.", image: "images/saulespid.png", audio: "audio/saulespid.wav" },
+            { word: "Putni,", image: "images/putni.png", audio: "audio/putni.wav" },
+            { word: "Dzied lā, lā, lā!", image: "images/putnidzied.png", audio: "audio/putnidzied.wav" },
+        ]
+    }
+];
+
+let currentSentenceIndex = 0;
+let currentWordIndex = 0;
+let intervalId = null;
+let isMuted = false;
+
+const imageElement = document.getElementById('word-image');
+const textElement = document.getElementById('word-text');
+const audioElement = document.getElementById('word-audio');
+const muteButton = document.getElementById('mute-button');
+const progressBar = document.getElementById('progress-bar');
+
+const duration = 4000; // 4 seconds per word
+
+function updateProgressBar(sentenceIndex, wordIndex) {
+    const sentence = sentences[sentenceIndex];
+    const progressPercentage = ((wordIndex + 1) / sentence.words.length) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+}
+
+function updateWord(sentenceIndex, wordIndex) {
+    const word = sentences[sentenceIndex].words[wordIndex];
+
+    imageElement.classList.remove('show');
+    textElement.classList.remove('show');
+
+    setTimeout(() => {
+        imageElement.src = word.image;
+        textElement.textContent = word.word;
+        audioElement.src = word.audio;
+
+        // Only play audio if not muted
+        if (!isMuted) {
+            audioElement.play();
+        }
+
+        imageElement.classList.add('show');
+        textElement.classList.add('show');
+    }, 1000);
+
+    updateProgressBar(sentenceIndex, wordIndex);
+}
+
+function nextWord() {
+    currentWordIndex++;
+    const sentence = sentences[currentSentenceIndex];
+
+    if (currentWordIndex >= sentence.words.length) {
+        currentWordIndex = 0;
+        currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+    }
+
+    updateWord(currentSentenceIndex, currentWordIndex);
+}
+
+function previousWord() {
+    currentWordIndex--;
+    const sentence = sentences[currentSentenceIndex];
+
+    if (currentWordIndex < 0) {
+        currentSentenceIndex = (currentSentenceIndex - 1 + sentences.length) % sentences.length;
+        currentWordIndex = sentences[currentSentenceIndex].words.length - 1;
+    }
+
+    updateWord(currentSentenceIndex, currentWordIndex);
+}
+
+document.getElementById('start-button').addEventListener('click', () => {
+    if (!intervalId) {
+        intervalId = setInterval(nextWord, duration);
+        updateWord(currentSentenceIndex, currentWordIndex);
+        
+    }
+});
+
+document.getElementById('stop-button').addEventListener('click', () => {
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+});
+
+document.getElementById('replay-button').addEventListener('click', () => {
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+    currentSentenceIndex = 0;
+    currentWordIndex = 0;
+    updateWord(currentSentenceIndex, currentWordIndex);
+    intervalId = setInterval(nextWord, duration);
+});
+
+document.getElementById('slide-left-button').addEventListener('click', () => {
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+    previousWord();
+});
+
+document.getElementById('slide-right-button').addEventListener('click', () => {
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+    nextWord();
+});
+
+muteButton.addEventListener('click', () => {
+    isMuted = !isMuted;
+    muteButton.textContent = isMuted ? '🔇' : '🔈';
+
+    // Pause or resume audio based on mute status
+    if (isMuted) {
+        audioElement.pause();
+    } else {
+        audioElement.play();
+    }
+});
+
+// Automatically mute or play the audio element whenever the mute status changes
+audioElement.addEventListener('play', () => {
+    if (isMuted) {
+        audioElement.pause();
+    }
+});
+</script>
+</body>
+</html>
